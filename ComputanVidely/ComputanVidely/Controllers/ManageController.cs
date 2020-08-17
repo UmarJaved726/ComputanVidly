@@ -37,7 +37,7 @@ namespace ComputanVidely.Controllers
                 _signInManager = value; 
             }
         }
-
+        // userMannager action method
         public ApplicationUserManager UserManager
         {
             get
