@@ -246,3 +246,5 @@ D:\computan\ComputanVidly\ComputanVidely\ComputanVidely\obj\Debug\ComputanVidely
 D:\computan\ComputanVidly\ComputanVidely\ComputanVidely\obj\Debug\ComputanVidely.csproj.CopyComplete
 D:\computan\ComputanVidly\ComputanVidely\ComputanVidely\obj\Debug\ComputanVidely.dll
 D:\computan\ComputanVidly\ComputanVidely\ComputanVidely\obj\Debug\ComputanVidely.pdb
+D:\computan\ComputanVidly\ComputanVidely\ComputanVidely\bin\AutoMapper.dll
+D:\computan\ComputanVidly\ComputanVidely\ComputanVidely\bin\AutoMapper.xml

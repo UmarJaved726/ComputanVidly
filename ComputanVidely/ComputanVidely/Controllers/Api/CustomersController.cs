@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Routing;
 using ComputanVidely.Models;
+using ComputanVidely.DTOs;
+using AutoMapper;
 
 namespace ComputanVidely.Controllers.Api
 {
@@ -18,13 +20,13 @@ namespace ComputanVidely.Controllers.Api
             _context = new ApplicationDbContext();
         }
         // GET /api/Customers
-        public IEnumerable<Customer> GetCustomers()
+        public IEnumerable<CustomerDto> GetCustomers()
         {
-            return _context.Customers.ToList();
+            return _context.Customers.ToList().Select(Mapper.Map<Customer, CustomerDto>);
         }
 
         // GET /api/Customers/1
-        public Customer GetCustomer(int id)
+        public CustomerDto GetCustomer(int id)
         {
             var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
 
@@ -33,27 +35,30 @@ namespace ComputanVidely.Controllers.Api
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            return customer;
+            return Mapper.Map<Customer, CustomerDto>(customer);
         }
 
         // POST /api/Customers
         [HttpPost]
-        public Customer CreateCustomer(Customer customer)
+        public IHttpActionResult CreateCustomer(CustomerDto customerDto)
         {
             if (!ModelState.IsValid)
             {
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                return BadRequest();
             }
 
+            var customer = Mapper.Map<CustomerDto, Customer>(customerDto);
             _context.Customers.Add(customer);
             _context.SaveChanges();
 
-            return customer;
+            customerDto.Id = customer.Id;
+
+            return Created(new Uri(Request.RequestUri + "/" + customer.Id), customerDto);
         }
 
         // PUT /api/customers/1
         [HttpPut]
-        public Customer UpdateCustomer(int id, Customer customer)
+        public void UpdateCustomer(int id, CustomerDto customerDto)
         {
             if (!ModelState.IsValid)
             {
@@ -67,14 +72,9 @@ namespace ComputanVidely.Controllers.Api
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            customerInDb.Name = customer.Name;
-            customerInDb.BirthDate = customer.BirthDate;
-            customerInDb.MembershipTypeId = customer.MembershipTypeId;
-            customerInDb.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter;
-
+            Mapper.Map<CustomerDto, Customer>(customerDto, customerInDb);
             _context.SaveChanges();
 
-            return customerInDb;
         }
 
         // DELETE api/customers/1
